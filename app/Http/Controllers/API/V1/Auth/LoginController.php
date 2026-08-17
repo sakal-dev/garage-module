@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Modules\Garage\Enums\PermissionEnum;
 use Modules\Garage\Enums\RoleEnum as GarageRoleEnum;
 use Modules\POS\Http\Controllers\API\V1\Auth\LoginController as PosLoginController;
 
@@ -87,10 +88,18 @@ class LoginController extends Controller
 	 */
 	private function guardGarageAccess(User $user): ?JsonResponse
 	{
-		foreach (GarageRoleEnum::allowedRoleValues() as $role) {
-			if ($user->hasRole($role)) {
-				return null;
-			}
+		// LARA-216 item 5 — was an allowlist of GarageRoleEnum role names, and it
+		// was the ONLY authorization on the entire Garage capture surface.
+		//
+		// A role allowlist means adding a bay technician requires a code change.
+		// ACCESS_GARAGE_APP is an owner grant (Garage is an OWNER module), so the
+		// vertical stays gated exactly as before while becoming grantable.
+		//
+		// hasPermissionTo(), not can(): this runs after Auth::validate proves the
+		// credential, and Gate::before would let any platform administrator into a
+		// tenant's Garage app.
+		if ($user->hasPermissionTo(PermissionEnum::ACCESS_GARAGE_APP->value)) {
+			return null;
 		}
 
 		return response()->jsonError(
