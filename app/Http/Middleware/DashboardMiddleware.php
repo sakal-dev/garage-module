@@ -22,7 +22,9 @@ class DashboardMiddleware
             icon: 'Car',
             order: 14,
             permissions: PermissionEnum::VIEW_ANY_GARAGE_VEHICLE->value,
-            route: 'dashboard.garage.*'
+            route: 'dashboard.garage.*',
+            // LARA-227 — approved matrix. Badge/hide comes from FeatureRegistry.
+            feature: 'garage'
         );
 
         MenuService::addSubmenuItem(

@@ -2,6 +2,7 @@
 
 namespace Modules\Garage\Providers;
 
+use App\Services\Entitlements\FeatureRegistry;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Routing\Router;
@@ -25,6 +26,7 @@ class GarageServiceProvider extends ModuleServiceProvider
      */
     public function boot(): void
     {
+        $this->registerEntitlementFeatures();
         parent::boot();
 
         Relation::morphMap([
@@ -66,4 +68,26 @@ class GarageServiceProvider extends ModuleServiceProvider
     // {
     //     $schedule->command('inspire')->hourly();
     // }
+
+    /**
+     * LARA-227A — Garage registers the feature IT OWNS.
+     *
+     * Core holds no feature list. A module that is not installed never boots,
+     * so it never registers, so no route pattern claims its pages and nothing
+     * can gate on its key — module independence made structural rather than
+     * conventional. The key is BARE because this capability is not owned by
+     * the product that happens to sell it (the LARA-227A naming rule).
+     */
+    protected function registerEntitlementFeatures(): void
+    {
+        FeatureRegistry::register(
+            key: 'garage',
+            module: 'Garage',
+            label: __('Garage'),
+            floor: 'Add-on',
+            policy: FeatureRegistry::POLICY_HIDE,
+            routes: ['dashboard.garage.*'],
+        );
+    }
+
 }
