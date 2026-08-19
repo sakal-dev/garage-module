@@ -29,7 +29,7 @@ class ServiceJobController extends Controller
 		$jobs = QueryBuilder::for(ServiceJob::class)
 			->with(['vehicle', 'customer', 'order'])
 			->withCount(['proofMedia', 'lines'])
-			->allowedFilters([
+			->allowedFilters(...[
 				AllowedFilter::exact('status'),
 				AllowedFilter::callback('search', function ($query, $value) {
 					$query->where(function ($q) use ($value) {

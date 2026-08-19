@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Customer\Models\Customer;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 
@@ -124,7 +124,7 @@ class Vehicle extends Model implements Searchable
 		return LogOptions::defaults()
 			->logFillable()
 			->logOnlyDirty()
-			->dontSubmitEmptyLogs();
+			->dontLogEmptyChanges();
 	}
 
 	/**

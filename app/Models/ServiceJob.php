@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\Customer\Models\Customer;
 use Modules\Garage\Enums\ServiceJobStatusEnum;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
 
 /**
  * A captured vehicle-service job (GR-03/GR-05): services + parts performed on a
@@ -119,7 +119,7 @@ class ServiceJob extends Model
 		return LogOptions::defaults()
 			->logFillable()
 			->logOnlyDirty()
-			->dontSubmitEmptyLogs();
+			->dontLogEmptyChanges();
 	}
 
 	protected static function newFactory()

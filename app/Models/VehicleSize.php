@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
 
 /**
  * A per-tenant, configurable vehicle size class (e.g. Small / Sedan / SUV / Truck).
@@ -71,7 +71,7 @@ class VehicleSize extends Model
 		return LogOptions::defaults()
 			->logFillable()
 			->logOnlyDirty()
-			->dontSubmitEmptyLogs();
+			->dontLogEmptyChanges();
 	}
 
 	/**

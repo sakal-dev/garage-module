@@ -23,7 +23,7 @@
 	import * as z from "zod";
 
 	const schema = toTypedSchema(z.object({
-		customer_id: z.number({ required_error: __('Customer is required'), invalid_type_error: __('Customer is required') }),
+		customer_id: z.number({ error: __('Customer is required') }),
 		plate_number: z.union([z.string(), z.null()]).optional(),
 		make: z.union([z.string(), z.null()]).optional(),
 		model: z.union([z.string(), z.null()]).optional(),

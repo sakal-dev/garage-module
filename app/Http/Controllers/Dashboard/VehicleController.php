@@ -32,7 +32,7 @@ class VehicleController extends Controller
     {
         $vehicles = QueryBuilder::for(Vehicle::class)
             ->with(['customer', 'size'])
-            ->allowedFilters([
+            ->allowedFilters(...[
                 'plate_number',
                 'make',
                 'model',
